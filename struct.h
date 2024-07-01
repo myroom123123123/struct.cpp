@@ -1,25 +1,19 @@
+#include <cmath>
 #include <iostream>
 
 using namespace std;
 
-struct Rectangle {
-    int x;
-    int y;
-    int width;
-    int height;
+struct Point {
+    double x;
+    double y;
 };
 
-void moveRectangle(Rectangle& rect, int dx, int dy) {
-    rect.x += dx;
-    rect.y += dy;
+double calculateDistance(const Point& p1, const Point& p2) {
+    double dx = p2.x - p1.x;
+    double dy = p2.y - p1.y;
+    return sqrt(dx * dx + dy * dy);
 }
 
-void resizeRectangle(Rectangle& rect, int newWidth, int newHeight) {
-    rect.width = newWidth;
-    rect.height = newHeight;
-}
-
-void printRectangle(const Rectangle& rect) {
-    cout << "Rectangle(x: " << rect.x << ", y: " << rect.y
-        << ", width: " << rect.width << ", height: " << rect.height << ")\n";
+void printPoint(const Point& p) {
+    cout << "Point(x: " << p.x << ", y: " << p.y << ")\n";
 }
