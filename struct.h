@@ -2,78 +2,44 @@
 
 using namespace std;
 
-struct Fraction {
-    int numerator;
-    int denominator;
+struct ComplexNumber {
+    double real;
+    double imaginary;
 
-    Fraction(int num = 0, int denom = 1) {
-        if (denom == 0) {
-            throw invalid_argument("Denominator cannot be zero");
-        }
-        numerator = num;
-        denominator = denom;
-        reduce();
+    ComplexNumber(double r = 0.0, double i = 0.0) : real(r), imaginary(i) {}
+
+    ComplexNumber operator+(const ComplexNumber& other) const {
+        return ComplexNumber(real + other.real, imaginary + other.imaginary);
     }
 
-    int gcd(int a, int b) {
-        while (b != 0) {
-            int temp = b;
-            b = a % b;
-            a = temp;
-        }
-        return a;
+    ComplexNumber operator-(const ComplexNumber& other) const {
+        return ComplexNumber(real - other.real, imaginary - other.imaginary);
     }
 
-    void reduce() {
-        int gcdValue = gcd(abs(numerator), abs(denominator));
-        numerator /= gcdValue;
-        denominator /= gcdValue;
-        if (denominator < 0) {
-            numerator = -numerator;
-            denominator = -denominator;
-        }
+    ComplexNumber operator*(const ComplexNumber& other) const {
+        double r = real * other.real - imaginary * other.imaginary;
+        double i = real * other.imaginary + imaginary * other.real;
+        return ComplexNumber(r, i);
     }
 
-    void toMixedNumber() const {
-        if (abs(numerator) >= denominator) {
-            int wholePart = numerator / denominator;
-            int remainder = abs(numerator) % denominator;
-            cout << "Mixed number: " << wholePart << " " << remainder << "/" << denominator << endl;
+    ComplexNumber operator/(const ComplexNumber& other) const {
+        double denominator = other.real * other.real + other.imaginary * other.imaginary;
+        if (denominator == 0.0) {
+            throw invalid_argument("Division by zero");
+        }
+        double r = (real * other.real + imaginary * other.imaginary) / denominator;
+        double i = (imaginary * other.real - real * other.imaginary) / denominator;
+        return ComplexNumber(r, i);
+    }
+
+    friend ostream& operator<<(ostream& out, const ComplexNumber& c) {
+        out << c.real;
+        if (c.imaginary >= 0) {
+            out << " + " << c.imaginary << "i";
         }
         else {
-            cout << "Proper fraction: " << numerator << "/" << denominator << endl;
+            out << " - " << -c.imaginary << "i";
         }
+        return out;
     }
 };
-
-Fraction operator+(const Fraction& a, const Fraction& b) {
-    int num = a.numerator * b.denominator + b.numerator * a.denominator;
-    int denom = a.denominator * b.denominator;
-    return Fraction(num, denom);
-}
-
-Fraction operator-(const Fraction& a, const Fraction& b) {
-    int num = a.numerator * b.denominator - b.numerator * a.denominator;
-    int denom = a.denominator * b.denominator;
-    return Fraction(num, denom);
-}
-
-Fraction operator*(const Fraction& a, const Fraction& b) {
-    int num = a.numerator * b.numerator;
-    int denom = a.denominator * b.denominator;
-    return Fraction(num, denom);
-}
-
-Fraction operator/(const Fraction& a, const Fraction& b) {
-    if (b.numerator == 0) {
-        throw invalid_argument("Cannot divide by zero");
-    }
-    int num = a.numerator * b.denominator;
-    int denom = a.denominator * b.numerator;
-    return Fraction(num, denom);
-}
-
-ostream& operator<<(ostream& out, const Fraction& frac) {
-    out << frac.numerator << "/" << frac.denominator;
-    return out;
-}

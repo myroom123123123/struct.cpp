@@ -2,32 +2,32 @@
 
 int main() {
     try {
-        Fraction f1(3, 4);
-        Fraction f2(2, 6);
-		Fraction result;
+        ComplexNumber c1(2.0, 3.0);
+        ComplexNumber c2(-1.0, 2.5);
+        ComplexNumber result;
         char operation;
 
-        cout << "Fraction 1: " << f1 << endl;
-        cout << "Fraction 2: " << f2 << endl;
+        cout << "Complex number 1: " << c1 << endl;
+        cout << "Complex number 2: " << c2 << endl;
 
         cout << "Enter operation (+, -, *, /): ";
         cin >> operation;
 
         switch (operation) {
         case '+':
-            result = f1 + f2;
+            result = c1 + c2;
             cout << "Sum: " << result << endl;
             break;
         case '-':
-            result = f1 - f2;
+            result = c1 - c2;
             cout << "Difference: " << result << endl;
             break;
         case '*':
-            result = f1 * f2;
+            result = c1 * c2;
             cout << "Product: " << result << endl;
             break;
         case '/':
-            result = f1 / f2;
+            result = c1 / c2;
             cout << "Quotient: " << result << endl;
             break;
         default:
@@ -35,15 +35,9 @@ int main() {
             break;
         }
 
-        cout << "Fraction 1 as mixed number: ";
-        f1.toMixedNumber();
-
-        cout << "Fraction 2 as mixed number: ";
-        f2.toMixedNumber();
-
     }
     catch (const invalid_argument& e) {
-        cout << e.what() << endl;
+        cout << "Error: " << e.what() << endl;
     }
 
     return 0;
